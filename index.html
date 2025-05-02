@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Role Model Sorter</title>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #34495e;
+      --accent: #3498db;
+      --light: #ecf0f1;
+      --success: #2ecc71;
+      --border: #bdc3c7;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f5f7fa;
+      color: var(--primary);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    
+    h2 {
+      text-align: center;
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .instructions {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--secondary);
+      background-color: var(--light);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+    
+    ul {
+      list-style: none;
+    }
+    
+    li {
+      background-color: white;
+      margin-bottom: 0.75rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border-left: 4px solid var(--accent);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      cursor: grab;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    li:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .sortable-ghost {
+      opacity: 0.4;
+      background-color: var(--light);
+    }
+    
+    button {
+      display: block;
+      margin: 1.5rem auto;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    button:hover {
+      background-color: #2980b9;
+    }
+    
+    #output {
+      margin-top: 1.5rem;
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      display: none;
+    }
+    
+    #output h3 {
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+    
+    #output ol {
+      padding-left: 2rem;
+    }
+    
+    #output li {
+      border-left: none;
+      box-shadow: none;
+      padding: 0.5rem 0;
+      background: transparent;
+      cursor: default;
+    }
+    
+    #output li:hover {
+      transform: none;
+    }
+    
+    .top-choice {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    
+    .top-choice-heading {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .top-choice-content {
+      background-color: var(--light);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border-left: 4px solid var(--success);
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      li {
+        font-size: 0.95rem;
+        padding: 0.75rem;
+      }
+      
+      .instructions {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 1rem 0.75rem;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+      
+      button {
+        padding: 0.6rem 1.2rem;
+      }
+    }
+    
+    .start-again {
+      background-color: var(--secondary);
+      margin-top: 2rem;
+    }
+    
+    .start-again:hover {
+      background-color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>ആരാണ് നിങ്ങളുടെ യഥാർത്ഥ ഹീറോ?</h2>
+    
+    <div class="instructions">
+      നിങ്ങളുടെ മൂല്യങ്ങൾ അനുസരിച്ച് ഈ ഓപ്ഷനുകൾ ക്രമീകരിക്കുക
+      <br>
+      <small>(ഏറ്റവും മുകളിൽ = നിങ്ങളുടെ #1 ഹീറോ)</small>
+    </div>
+
+    <ul id="sortable-list">
+      <li>വലിയ സ്ഥാപനങ്ങളിൽ അധ്വാനിച്ച് പഠിച്ച് കമ്പനികളിൽ വലിയ പാക്കേജോടെ പ്ളേസ്മെന്റ് നേടി സുഖജീവിതം നയിക്കുന്നവർ</li>
+      <li>സ്വന്തമായി സ്റ്റാർട്ട് ആപ്പുകൾ ആരംഭിച്ച് ടെക്ക്നോളജിയിൽ വിപ്ലവം തീർക്കുകയും, ഒരുപാട് പേർക്ക് തൊഴിൽ നല്കുകയെല്ലാം ചെയ്യുന്ന ഒരു എന്റർപ്രണർ.</li>
+      <li>എഴുത്ത്, ട്രാവൽ, ഫോട്ടോഗ്രാഫി  പോലെയുള്ള ഇഷ്ടങ്ങളെ  പ്രൊഫെഷൻ ആക്കി മാറ്റി കരിയർ മുന്നോട്ട് കൊണ്ടുപോകുന്നവർ</li>
+      <li>ആപ്പുകളിലൂടെയും ഗെയിമുകളിലൂടേയും പോൺസി ഇൻവെസ്റ്റ്മെന്റുകളിലൂടെയും മറ്റും അധ്വാനിക്കാതെ തന്നെ പരമാവധി പണമുണ്ടാക്കാനുള്ള സാമർഥ്യം കാണിക്കുന്നവർ</li>
+      <li>പേഴ്‌സണൽ കരിയറുകൾ ഉപേക്ഷിച്ച് പൊതുജനസേവനത്തിന് ജീവിതം മാറ്റിവെച്ച രാഷ്ട്രനേതാക്കളും ആക്ടിവിസ്റ്റുകളും</li>
+      <li>വാക്സിനുകൾ കണ്ടെത്താനുള്ള ഗവേഷണത്തിൽ മുഴുകിയ ഡോക്ടറെപ്പോലെ, മനുഷ്യാവകാശ പ്രശ്നങ്ങളിൽ ഇടപെടുന്ന ഒരു വക്കീലിനെപ്പോലെ വലിയ സാലറി പാക്കേജിനപ്പുറം തൻ്റെ കരിയർ അവസാനിക്കുന്നതിന്ന് മുമ്പ് ചില അടയാളപ്പെടുത്തലുകൾ ഈ ലോകത്ത് ബാക്കി വെക്കണമെന്ന് ആഗ്രഹിച്ച് കരിയർ മുന്നോട്ട് കൊണ്ടുപോകുന്നവർ</li>
+      <li>യൂട്യുബിലും മറ്റും വിഡിയോ ബ്ലോഗിങ് നടത്തി പണവും പ്രശസ്തിയും നേടുന്നവർ</li>
+    </ul>
+
+    <button onclick="submitOrder()">സമർപ്പിക്കുക</button>
+
+    <div id="output"></div>
+  </div>
+
+  <script>
+    new Sortable(document.getElementById('sortable-list'), {
+      animation: 150,
+      ghostClass: 'sortable-ghost',
+    });
+
+    function submitOrder() {
+      const items = document.querySelectorAll('#sortable-list li');
+      const output = document.getElementById('output');
+      const sortableList = document.getElementById('sortable-list');
+      const submitButton = document.querySelector('button');
+      const instructions = document.querySelector('.instructions');
+      
+      // Hide the list, submit button, and instructions
+      sortableList.style.display = 'none';
+      submitButton.style.display = 'none';
+      instructions.style.display = 'none';
+      
+      let listHTML = "<h3>നിങ്ങളുടെ അന്തിമ ക്രമീകരണം</h3><ol>";
+      
+      Array.from(items).forEach((item, index) => {
+        listHTML += `<li>${item.textContent}</li>`;
+      });
+      
+      listHTML += "</ol>";
+      
+      // Add a message about their top choice
+      const topChoice = items[0].textContent;
+      listHTML += `
+        <div class="top-choice">
+          <p class="top-choice-heading">നിങ്ങളുടെ ഒന്നാം നമ്പർ ഹീറോ:</p>
+          <p class="top-choice-content">${topChoice}</p>
+        </div>
+      `;
+      
+      // Add the "Start Again" button
+      listHTML += `
+        <button onclick="startAgain()" class="start-again">വീണ്ടും ആരംഭിക്കുക</button>
+      `;
+      
+      output.innerHTML = listHTML;
+      output.style.display = 'block';
+    }
+    
+    function startAgain() {
+      const output = document.getElementById('output');
+      const sortableList = document.getElementById('sortable-list');
+      const submitButton = document.querySelector('button');
+      const instructions = document.querySelector('.instructions');
+      
+      // Show the list, submit button, and instructions
+      sortableList.style.display = 'block';
+      submitButton.style.display = 'block';
+      instructions.style.display = 'block';
+      
+      // Hide the output
+      output.style.display = 'none';
+      
+      // Reset the list to original order
+      const list = document.getElementById('sortable-list');
+      const listItems = Array.from(list.children);
+      listItems.sort(() => Math.random() - 0.5);
+      listItems.forEach(item => list.appendChild(item));
+    }
+  </script>
+</body>
+</html>
+
