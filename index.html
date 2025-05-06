@@ -5,15 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Role Model Sorter</title>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     :root {
-      --primary: #2c3e50;
-      --secondary: #34495e;
-      --accent: #3498db;
-      --light: #ecf0f1;
-      --success: #2ecc71;
-      --border: #bdc3c7;
+      --primary: #4b7bec;
+      --secondary: #3867d6;
+      --accent: #20bf6b;
+      --light: #f1f9fe;
+      --warning: #fa8231;
+      --danger: #eb3b5a;
+      --border: #a5b1c2;
+      --yellow: #fed330;
+      --purple: #8854d0;
+      --pink: #fc5c65;
     }
     
     * {
@@ -23,24 +28,55 @@
     }
     
     body {
-      font-family: 'Nunito', sans-serif;
-      background-color: #f5f7fa;
+      font-family: 'Baloo Chettan 2', cursive;
+      background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 50%, #d1c4e9 100%);
       color: var(--primary);
       line-height: 1.6;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.8) 2%, transparent 2.5%),
+        radial-gradient(circle at 85% 25%, rgba(255, 255, 255, 0.8) 1%, transparent 1.5%),
+        radial-gradient(circle at 25% 65%, rgba(255, 255, 255, 0.8) 1.5%, transparent 2%),
+        radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.8) 2%, transparent 2.5%);
+      background-size: 150px 150px;
+      opacity: 0.4;
+      z-index: -1;
     }
     
     .container {
       max-width: 800px;
       margin: 0 auto;
       padding: 2rem 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
     }
     
     h2 {
       text-align: center;
       color: var(--primary);
-      font-size: 1.8rem;
+      font-size: 2.2rem;
       margin-bottom: 1.5rem;
       font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     }
     
     .instructions {
@@ -48,9 +84,18 @@
       margin-bottom: 1.5rem;
       color: var(--secondary);
       background-color: var(--light);
-      padding: 1rem;
-      border-radius: 0.5rem;
-      font-size: 1rem;
+      padding: 1.2rem;
+      border-radius: 15px;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      border: 2px dashed var(--border);
+    }
+    
+    .instructions small {
+      display: block;
+      margin-top: 8px;
+      color: var(--warning);
+      font-weight: 600;
     }
     
     ul {
@@ -59,18 +104,59 @@
     
     li {
       background-color: white;
-      margin-bottom: 0.75rem;
-      padding: 1rem;
-      border-radius: 0.5rem;
-      border-left: 4px solid var(--accent);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1rem;
+      padding: 1.2rem;
+      border-radius: 15px;
+      border-left: 6px solid var(--accent);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
       cursor: grab;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.3s, box-shadow 0.3s;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    li::before {
+      content: "\f0b2";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      margin-right: 12px;
+      color: var(--secondary);
+      font-size: 1.2rem;
+    }
+    
+    li:nth-child(1) {
+      border-left-color: var(--accent);
+    }
+    
+    li:nth-child(2) {
+      border-left-color: var(--purple);
+    }
+    
+    li:nth-child(3) {
+      border-left-color: var(--warning);
+    }
+    
+    li:nth-child(4) {
+      border-left-color: var(--pink);
+    }
+    
+    li:nth-child(5) {
+      border-left-color: var(--danger);
+    }
+    
+    li:nth-child(6) {
+      border-left-color: var(--yellow);
+    }
+    
+    li:nth-child(7) {
+      border-left-color: var(--primary);
     }
     
     li:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+      background-color: var(--light);
     }
     
     .sortable-ghost {
@@ -78,88 +164,157 @@
       background-color: var(--light);
     }
     
+    .sortable-drag {
+      background-color: var(--light);
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    }
+    
     button {
       display: block;
-      margin: 1.5rem auto;
-      padding: 0.75rem 1.5rem;
+      margin: 2rem auto;
+      padding: 1rem 2rem;
       background-color: var(--accent);
       color: white;
       border: none;
-      border-radius: 0.5rem;
-      font-family: 'Nunito', sans-serif;
+      border-radius: 50px;
+      font-family: 'Baloo Chettan 2', cursive;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 1.2rem;
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(32, 191, 107, 0.4);
     }
     
     button:hover {
-      background-color: #2980b9;
+      background-color: #0ca750;
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(32, 191, 107, 0.6);
+    }
+    
+    button:active {
+      transform: translateY(1px);
     }
     
     #output {
       margin-top: 1.5rem;
       background-color: white;
-      padding: 1.5rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       display: none;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     #output h3 {
       color: var(--primary);
       text-align: center;
-      margin-bottom: 1rem;
-      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.6rem;
     }
     
     #output ol {
-      padding-left: 2rem;
+      padding-left: 2.5rem;
     }
     
     #output li {
       border-left: none;
       box-shadow: none;
-      padding: 0.5rem 0;
+      padding: 0.8rem 0;
       background: transparent;
       cursor: default;
+      margin-bottom: 0.5rem;
+      display: list-item;
+    }
+    
+    #output li::before {
+      display: none;
     }
     
     #output li:hover {
       transform: none;
+      background-color: transparent;
     }
     
     .top-choice {
-      margin-top: 1.5rem;
+      margin-top: 2rem;
       text-align: center;
     }
     
     .top-choice-heading {
       font-weight: 600;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
+      font-size: 1.2rem;
+      color: var(--primary);
     }
     
     .top-choice-content {
       background-color: var(--light);
-      padding: 1rem;
-      border-radius: 0.5rem;
-      border-left: 4px solid var(--success);
+      padding: 1.5rem;
+      border-radius: 15px;
+      border-left: 6px solid var(--accent);
+      font-size: 1.2rem;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+    
+    .top-choice-content::before {
+      content: "\f521";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      font-size: 2rem;
+      color: var(--accent);
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: #f00;
+      animation: confetti 5s ease-in-out infinite;
+      z-index: -1;
+    }
+    
+    @keyframes confetti {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
     }
     
     /* Responsive styles */
     @media (max-width: 768px) {
       h2 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
       }
       
       li {
-        font-size: 0.95rem;
-        padding: 0.75rem;
+        font-size: 1rem;
+        padding: 1rem;
       }
       
       .instructions {
-        font-size: 0.9rem;
-        padding: 0.75rem;
+        font-size: 1rem;
+        padding: 1rem;
+      }
+      
+      button {
+        font-size: 1.1rem;
+        padding: 0.8rem 1.6rem;
       }
     }
     
@@ -169,53 +324,143 @@
       }
       
       h2 {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
       }
       
-      button {
-        padding: 0.6rem 1.2rem;
+      .card {
+        padding: 1.5rem 1rem;
+      }
+      
+      li {
+        font-size: 0.9rem;
       }
     }
     
     .start-again {
       background-color: var(--secondary);
       margin-top: 2rem;
+      box-shadow: 0 4px 15px rgba(59, 103, 214, 0.4);
     }
     
     .start-again:hover {
-      background-color: #2c3e50;
+      background-color: #2854c0;
+      box-shadow: 0 7px 20px rgba(59, 103, 214, 0.6);
+    }
+    
+    .hint-text {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: var(--secondary);
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background-color: var(--light);
+      border-radius: 5px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    
+    .progress {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--yellow));
+      width: 50%;
+      border-radius: 5px;
+      transition: width 0.3s;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>ആരാണ് നിങ്ങളുടെ യഥാർത്ഥ ഹീറോ?</h2>
-    
-    <div class="instructions">
-      നിങ്ങളുടെ മൂല്യങ്ങൾ അനുസരിച്ച് ഈ ഓപ്ഷനുകൾ ക്രമീകരിക്കുക
-      <br>
-      <small>(ഏറ്റവും മുകളിൽ = നിങ്ങളുടെ #1 ഹീറോ)</small>
+    <div class="card">
+      <h2>ആരാണ് നിങ്ങളുടെ യഥാർത്ഥ ഹീറോ? <i class="fas fa-medal"></i></h2>
+      
+      <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+      </div>
+      
+      <div class="instructions">
+        നിങ്ങളുടെ മൂല്യങ്ങൾ അനുസരിച്ച് ഈ ഓപ്ഷനുകൾ ക്രമീകരിക്കുക
+        <small>(ഏറ്റവും മുകളിൽ = നിങ്ങളുടെ #1 ഹീറോ)</small>
+      </div>
+
+      <div class="hint-text">
+        <i class="fas fa-arrows-up-down"></i> എല്ലാ ഐറ്റങ്ങളും ഡ്രാഗ് ചെയ്യാൻ കഴിയും
+      </div>
+
+      <ul id="sortable-list">
+        <li>വലിയ സ്ഥാപനങ്ങളിൽ അധ്വാനിച്ച് പഠിച്ച് കമ്പനികളിൽ വലിയ പാക്കേജോടെ പ്ളേസ്മെന്റ് നേടി സുഖജീവിതം നയിക്കുന്നവർ</li>
+        <li>സ്വന്തമായി സ്റ്റാർട്ട് ആപ്പുകൾ ആരംഭിച്ച് ടെക്ക്നോളജിയിൽ വിപ്ലവം തീർക്കുകയും, ഒരുപാട് പേർക്ക് തൊഴിൽ നല്കുകയെല്ലാം ചെയ്യുന്ന ഒരു എന്റർപ്രണർ.</li>
+        <li>എഴുത്ത്, ട്രാവൽ, ഫോട്ടോഗ്രാഫി  പോലെയുള്ള ഇഷ്ടങ്ങളെ  പ്രൊഫെഷൻ ആക്കി മാറ്റി കരിയർ മുന്നോട്ട് കൊണ്ടുപോകുന്നവർ</li>
+        <li>ആപ്പുകളിലൂടെയും ഗെയിമുകളിലൂടേയും പോൺസി ഇൻവെസ്റ്റ്മെന്റുകളിലൂടെയും മറ്റും അധ്വാനിക്കാതെ തന്നെ പരമാവധി പണമുണ്ടാക്കാനുള്ള സാമർഥ്യം കാണിക്കുന്നവർ</li>
+        <li>പേഴ്‌സണൽ കരിയറുകൾ ഉപേക്ഷിച്ച് പൊതുജനസേവനത്തിന് ജീവിതം മാറ്റിവെച്ച രാഷ്ട്രനേതാക്കളും ആക്ടിവിസ്റ്റുകളും</li>
+        <li>വാക്സിനുകൾ കണ്ടെത്താനുള്ള ഗവേഷണത്തിൽ മുഴുകിയ ഡോക്ടറെപ്പോലെ, മനുഷ്യാവകാശ പ്രശ്നങ്ങളിൽ ഇടപെടുന്ന ഒരു വക്കീലിനെപ്പോലെ വലിയ സാലറി പാക്കേജിനപ്പുറം തൻ്റെ കരിയർ അവസാനിക്കുന്നതിന്ന് മുമ്പ് ചില അടയാളപ്പെടുത്തലുകൾ ഈ ലോകത്ത് ബാക്കി വെക്കണമെന്ന് ആഗ്രഹിച്ച് കരിയർ മുന്നോട്ട് കൊണ്ടുപോകുന്നവർ</li>
+        <li>യൂട്യുബിലും മറ്റും വിഡിയോ ബ്ലോഗിങ് നടത്തി പണവും പ്രശസ്തിയും നേടുന്നവർ</li>
+      </ul>
+
+      <button onclick="submitOrder()"><i class="fas fa-check-circle"></i> സമർപ്പിക്കുക</button>
     </div>
 
-    <ul id="sortable-list">
-      <li>വലിയ സ്ഥാപനങ്ങളിൽ അധ്വാനിച്ച് പഠിച്ച് കമ്പനികളിൽ വലിയ പാക്കേജോടെ പ്ളേസ്മെന്റ് നേടി സുഖജീവിതം നയിക്കുന്നവർ</li>
-      <li>സ്വന്തമായി സ്റ്റാർട്ട് ആപ്പുകൾ ആരംഭിച്ച് ടെക്ക്നോളജിയിൽ വിപ്ലവം തീർക്കുകയും, ഒരുപാട് പേർക്ക് തൊഴിൽ നല്കുകയെല്ലാം ചെയ്യുന്ന ഒരു എന്റർപ്രണർ.</li>
-      <li>എഴുത്ത്, ട്രാവൽ, ഫോട്ടോഗ്രാഫി  പോലെയുള്ള ഇഷ്ടങ്ങളെ  പ്രൊഫെഷൻ ആക്കി മാറ്റി കരിയർ മുന്നോട്ട് കൊണ്ടുപോകുന്നവർ</li>
-      <li>ആപ്പുകളിലൂടെയും ഗെയിമുകളിലൂടേയും പോൺസി ഇൻവെസ്റ്റ്മെന്റുകളിലൂടെയും മറ്റും അധ്വാനിക്കാതെ തന്നെ പരമാവധി പണമുണ്ടാക്കാനുള്ള സാമർഥ്യം കാണിക്കുന്നവർ</li>
-      <li>പേഴ്‌സണൽ കരിയറുകൾ ഉപേക്ഷിച്ച് പൊതുജനസേവനത്തിന് ജീവിതം മാറ്റിവെച്ച രാഷ്ട്രനേതാക്കളും ആക്ടിവിസ്റ്റുകളും</li>
-      <li>വാക്സിനുകൾ കണ്ടെത്താനുള്ള ഗവേഷണത്തിൽ മുഴുകിയ ഡോക്ടറെപ്പോലെ, മനുഷ്യാവകാശ പ്രശ്നങ്ങളിൽ ഇടപെടുന്ന ഒരു വക്കീലിനെപ്പോലെ വലിയ സാലറി പാക്കേജിനപ്പുറം തൻ്റെ കരിയർ അവസാനിക്കുന്നതിന്ന് മുമ്പ് ചില അടയാളപ്പെടുത്തലുകൾ ഈ ലോകത്ത് ബാക്കി വെക്കണമെന്ന് ആഗ്രഹിച്ച് കരിയർ മുന്നോട്ട് കൊണ്ടുപോകുന്നവർ</li>
-      <li>യൂട്യുബിലും മറ്റും വിഡിയോ ബ്ലോഗിങ് നടത്തി പണവും പ്രശസ്തിയും നേടുന്നവർ</li>
-    </ul>
-
-    <button onclick="submitOrder()">സമർപ്പിക്കുക</button>
-
-    <div id="output"></div>
+    <div id="output" class="card"></div>
   </div>
 
   <script>
     new Sortable(document.getElementById('sortable-list'), {
       animation: 150,
       ghostClass: 'sortable-ghost',
+      dragClass: 'sortable-drag',
+      onEnd: function() {
+        updateProgress();
+      }
+    });
+    
+    // Create confetti animation
+    function createConfetti() {
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.animationDelay = Math.random() * 5 + 's';
+        confetti.style.backgroundColor = ['#4b7bec', '#20bf6b', '#fed330', '#fc5c65', '#8854d0'][Math.floor(Math.random() * 5)];
+        document.body.appendChild(confetti);
+        
+        // Remove confetti after animation completes
+        setTimeout(() => {
+          confetti.remove();
+        }, 5000);
+      }
+    }
+    
+    function updateProgress() {
+      const items = document.querySelectorAll('#sortable-list li');
+      let moved = 0;
+      
+      // Count items that have been moved from their original position
+      Array.from(items).forEach((item, index) => {
+        if (item.dataset.originalIndex && parseInt(item.dataset.originalIndex) !== index) {
+          moved++;
+        }
+      });
+      
+      // Update progress bar
+      const progress = document.getElementById('progress');
+      const progressPercent = moved > 0 ? (moved / items.length) * 100 : 50;
+      progress.style.width = progressPercent + '%';
+    }
+    
+    // Store original positions
+    window.addEventListener('DOMContentLoaded', function() {
+      const items = document.querySelectorAll('#sortable-list li');
+      Array.from(items).forEach((item, index) => {
+        item.dataset.originalIndex = index;
+      });
     });
 
     function submitOrder() {
@@ -224,11 +469,11 @@
       const sortableList = document.getElementById('sortable-list');
       const submitButton = document.querySelector('button');
       const instructions = document.querySelector('.instructions');
+      const hintText = document.querySelector('.hint-text');
+      const progressBar = document.querySelector('.progress-bar');
       
       // Hide the list, submit button, and instructions
-      sortableList.style.display = 'none';
-      submitButton.style.display = 'none';
-      instructions.style.display = 'none';
+      document.querySelector('.card').style.display = 'none';
       
       let listHTML = "<h3>നിങ്ങളുടെ അന്തിമ ക്രമീകരണം</h3><ol>";
       
@@ -249,32 +494,34 @@
       
       // Add the "Start Again" button
       listHTML += `
-        <button onclick="startAgain()" class="start-again">വീണ്ടും ആരംഭിക്കുക</button>
+        <button onclick="startAgain()" class="start-again"><i class="fas fa-redo"></i> വീണ്ടും ആരംഭിക്കുക</button>
       `;
       
       output.innerHTML = listHTML;
       output.style.display = 'block';
+      
+      // Trigger confetti animation
+      createConfetti();
     }
     
     function startAgain() {
       const output = document.getElementById('output');
-      const sortableList = document.getElementById('sortable-list');
-      const submitButton = document.querySelector('button');
-      const instructions = document.querySelector('.instructions');
+      const card = document.querySelector('.card');
       
-      // Show the list, submit button, and instructions
-      sortableList.style.display = 'block';
-      submitButton.style.display = 'block';
-      instructions.style.display = 'block';
+      // Show the card with the list, submit button, and instructions
+      card.style.display = 'block';
       
       // Hide the output
       output.style.display = 'none';
       
-      // Reset the list to original order
+      // Reset the list to random order
       const list = document.getElementById('sortable-list');
       const listItems = Array.from(list.children);
       listItems.sort(() => Math.random() - 0.5);
       listItems.forEach(item => list.appendChild(item));
+      
+      // Reset progress bar
+      updateProgress();
     }
   </script>
 </body>
